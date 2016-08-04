@@ -13,6 +13,7 @@ trait PicklersTest extends TestSuite {
 
   def expectPickleEqual(value: Any, expectedPickle: js.Any): Unit = {
     val actualPickleWrapped = new PickleWrapper(PicklerRegistry.pickle(value))
+    println(s"actualPickleWrapped: ${actualPickleWrapped}")
     val expectedPickleWrapped = new PickleWrapper(expectedPickle)
     assert(actualPickleWrapped == expectedPickleWrapped)
   }

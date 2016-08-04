@@ -75,22 +75,18 @@ object Unpickler extends PicklerMaterializers {
 
 
   /*
-   * Array
+   * Vector
    */
-/*
 
-  trait BaseArrayUnpickler[A <: Array[Any]] extends Unpickler[A] {
+  trait BaseVectorUnpickler[A <: Vector[Any]] extends Unpickler[A] {
     def unpickle[P](pickle: P)(implicit registry: PicklerRegistry, reader: PReader[P]): A = {
       val len = reader.readArrayLength(pickle)
       (0 to len-1).map { i =>
-        val obj = reader.readArrayElem(pickle, i)
-        obj
+        reader.readArrayElem(pickle, i)
       }.asInstanceOf[A] // FIXME: to avoid
     }
   }
-
-  implicit object ArrayUnpickler extends BaseArrayUnpickler[Array[Any]]
-*/
+  implicit object VectorUnpickler extends BaseVectorUnpickler[Vector[Any]]
 
 
   /*

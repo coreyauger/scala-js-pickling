@@ -23,6 +23,22 @@ object CaseClassPicklersTest extends PicklersTest {
               age = lit(t = "java.lang.Integer", v = 24))))
     }
 
+
+    "pickle vector" - {
+      expectPickleEqual(
+        Vector[Int](1,2),
+        lit(t = "scala.collection.immutable.Vector", v =  js.Array(1,2)))
+    }
+
+    "unpickle vector" - {
+      expectUnpickleEqual(
+        lit(t = "scala.collection.immutable.Vector", v =  js.Array(
+          1,2
+          )
+        ),
+        Vector[Int](1,2))
+    }
+
     "unpickle a Person" - {
       expectUnpickleEqual(
           lit(t = "be.doeraene.spickling.Person", v = lit(

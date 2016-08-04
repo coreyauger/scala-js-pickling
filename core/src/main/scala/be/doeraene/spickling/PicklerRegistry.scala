@@ -54,19 +54,21 @@ class BasePicklerRegistry extends PicklerRegistry {
     singletonsRev(name.name) = obj
   }
 
-  def pickle[P](value: Any)(implicit builder: PBuilder[P],
-      registry: PicklerRegistry): P = {
+  def pickle[P](value: Any)(implicit builder: PBuilder[P], registry: PicklerRegistry): P = {
     if (value == null) {
       builder.makeNull()
     } else {
+      println(s"value: ${value}")
       singletons.get(value) match {
         case Some(name) => builder.makeObject(("s", builder.makeString(name)))
         case _ =>
           val className = value.getClass.getName match {
             case "java.lang.Byte" | "java.lang.Short" => "java.lang.Integer"
             case "java.lang.Float"                    => "java.lang.Double"
+            case x if x.startsWith("[L")               => "[Ljava.lang.Object;"
             case name                                 => name
           }
+          println(s"Lookup for className: ${className}")
           val pickler = picklers(className)
           val pickledValue = pickler.pickle[P](value.asInstanceOf[pickler.Picklee])
           builder.makeObject(
@@ -103,8 +105,13 @@ class BasePicklerRegistry extends PicklerRegistry {
     registerPrimitive[Double, java.lang.Double]
     registerPrimitive[UUID, java.util.UUID]
 
-    registerInternal((Array[Nothing]()).getClass, Pickler.ArrayPickler, Unpickler.ArrayUnpickler)
+    registerInternal((Vector[Nothing]()).getClass, Pickler.VectorPickler, Unpickler.VectorUnpickler)
+    register[Vector[Any]]
+
+/*    registerInternal((Array[Nothing]()).getClass, Pickler.ArrayPickler, Unpickler.ArrayUnpickler)
     register[Array[Any]]
+    register[Array[Int]]
+    register[Array[Double]]*/
 
     registerInternal((Map[Nothing, Nothing]()).getClass, Pickler.MapPickler, Unpickler.MapUnpickler)
     register[Map[Any, Any]]
