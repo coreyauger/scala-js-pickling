@@ -93,6 +93,10 @@ object Pickler extends PicklerMaterializers {
   }
 
   implicit object VectorPickler extends BaseVectorPickler[Vector[Any]]
+
+  // Notes on Array[T]
+  //http://stackoverflow.com/questions/6867131/getclass-method-java-with-array-types
+
   /*// TODO: not sure of a way around having to define these yet
   implicit object IntArrayPickler extends Pickler[Array[Int]] {
     def pickle[P](x: Array[Int])(implicit registry: PicklerRegistry, builder: PBuilder[P]): P = {
