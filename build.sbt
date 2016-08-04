@@ -1,7 +1,7 @@
 import PicklingBuild.enableQuasiquotesIn210
 
 val commonSettings = Seq(
-    organization := "be.doeraene",
+    organization := "io.surfkit",
     version := "0.4.1-SNAPSHOT",
     normalizedName ~= { _.replace("scala-js", "scalajs") },
     homepage := Some(url("http://scala-js.org/")),
@@ -13,34 +13,7 @@ val commonSettings = Seq(
         "-unchecked",
         "-feature",
         "-encoding", "utf8"
-    ),
-
-    scmInfo := Some(ScmInfo(
-        url("https://github.com/scala-js/scala-js-pickling"),
-        "scm:git:git@github.com:scala-js/scala-js-pickling.git",
-        Some("scm:git:git@github.com:scala-js/scala-js-pickling.git"))),
-
-    publishMavenStyle := true,
-
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-
-    pomExtra := (
-      <developers>
-        <developer>
-          <id>sjrd</id>
-          <name>Sébastien Doeraene</name>
-          <url>https://github.com/sjrd/</url>
-        </developer>
-      </developers>
-    ),
-
-    pomIncludeRepository := { _ => false }
+    )
 )
 
 lazy val root = project.in(file("."))
@@ -53,6 +26,7 @@ lazy val root = project.in(file("."))
 
 lazy val core = crossProject.crossType(CrossType.Pure)
   .settings(commonSettings: _*)
+  .settings(resolverSettings: _*)
   .settings(enableQuasiquotesIn210: _*)
   .settings(
     name := "Scala.js pickling core",
@@ -66,6 +40,7 @@ lazy val corejs = core.js
 lazy val js = project
   .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings: _*)
+  .settings(resolverSettings: _*)
   .settings(
     name := "Scala.js pickling"
   )
@@ -73,6 +48,7 @@ lazy val js = project
 
 lazy val playjson = project
   .settings(commonSettings: _*)
+  .settings(resolverSettings: _*)
   .settings(
     name := "Scala.js pickling play-json",
     resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/maven-releases/",
@@ -84,6 +60,7 @@ lazy val playjson = project
 lazy val tests = project
   .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings: _*)
+  .settings(resolverSettings: _*)
   .settings(
     publish := {},
     publishLocal := {},
@@ -93,3 +70,9 @@ lazy val tests = project
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
   .dependsOn(js)
+
+lazy val resolverSettings = Seq(
+  credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
+  resolvers += "NextWave Repo" at "http://maxdevmaster.cloudapp.net:4343/artifactory/nxtwv-maven/",
+  publishTo := Some("NextWave Repo" at "http://maxdevmaster.cloudapp.net:4343/artifactory/nxtwv-maven/")
+)

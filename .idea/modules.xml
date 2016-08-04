@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-sources.iml" filepath="$PROJECT_DIR$/.idea/modules/core-sources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/coreJS.iml" filepath="$PROJECT_DIR$/.idea/modules/coreJS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/coreJVM.iml" filepath="$PROJECT_DIR$/.idea/modules/coreJVM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/js.iml" filepath="$PROJECT_DIR$/.idea/modules/js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/playjson.iml" filepath="$PROJECT_DIR$/.idea/modules/playjson.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.iml" filepath="$PROJECT_DIR$/.idea/modules/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tests.iml" filepath="$PROJECT_DIR$/.idea/modules/tests.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,7 +1,14 @@
 package be.doeraene.spickling
 
+import java.util.UUID
+
 import scala.reflect.ClassTag
 import scala.collection.mutable
+
+import scala.collection.immutable.Map.{Map1, Map2, Map3, Map4}
+import scala.collection.immutable.HashMap.HashTrieMap
+import scala.collection.immutable.Set.{Set1, Set2, Set3, Set4}
+import scala.collection.immutable.HashSet.HashTrieSet
 
 object PicklerRegistry extends BasePicklerRegistry {
   class SingletonFullName[A](val name: String)
@@ -94,6 +101,25 @@ class BasePicklerRegistry extends PicklerRegistry {
     registerPrimitive[Long, java.lang.Long]
     registerPrimitive[Float, java.lang.Float]
     registerPrimitive[Double, java.lang.Double]
+    registerPrimitive[UUID, java.util.UUID]
+
+    registerInternal((Array[Nothing]()).getClass, Pickler.ArrayPickler, Unpickler.ArrayUnpickler)
+    register[Array[Any]]
+
+    registerInternal((Map[Nothing, Nothing]()).getClass, Pickler.MapPickler, Unpickler.MapUnpickler)
+    register[Map[Any, Any]]
+    register[Map1[Any, Any]]
+    register[Map2[Any, Any]]
+    register[Map3[Any, Any]]
+    register[Map4[Any, Any]]
+    register[HashTrieMap[Any, Any]]
+    registerInternal((Set[Nothing]()).getClass, Pickler.SetPickler, Unpickler.SetUnpickler)
+    register[Set[Any]]
+    register[Set1[Any]]
+    register[Set2[Any]]
+    register[Set3[Any]]
+    register[Set4[Any]]
+    register[HashTrieSet[Any]]
 
     register[String]
   }
