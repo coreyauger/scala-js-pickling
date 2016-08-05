@@ -89,6 +89,25 @@ object Unpickler extends PicklerMaterializers {
   implicit object VectorUnpickler extends BaseVectorUnpickler[Vector[Any]]
 
 
+
+  trait BaseArrayUnpickler[A <: Array[Any]] extends Unpickler[A] {
+    def unpickle[P](pickle: P)(implicit registry: PicklerRegistry, reader: PReader[P]): A = {
+      val len = reader.readArrayLength(pickle)
+      (0 to len-1).map { i =>
+        reader.readArrayElem(pickle, i)
+      }.asInstanceOf[A] // FIXME: to avoid
+    }
+  }
+  implicit object ArrayUnpickler extends BaseArrayUnpickler[Array[Any]]
+  implicit object DoubleArrayUnpickler extends Unpickler[Array[Double]] {
+    def unpickle[P](pickle: P)(implicit registry: PicklerRegistry, reader: PReader[P]): Array[Double] = {
+      val len = reader.readArrayLength(pickle)
+      (0 to len-1).map { i =>
+        reader.readNumber( reader.readArrayElem(pickle, i) )
+      }.toArray[Double] // FIXME: to avoid*/
+    }
+  }
+
   /*
   * JDate
   */

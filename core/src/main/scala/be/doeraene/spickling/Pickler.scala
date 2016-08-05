@@ -96,18 +96,29 @@ object Pickler extends PicklerMaterializers {
 
   // Notes on Array[T]
   //http://stackoverflow.com/questions/6867131/getclass-method-java-with-array-types
-
-  /*// TODO: not sure of a way around having to define these yet
-  implicit object IntArrayPickler extends Pickler[Array[Int]] {
-    def pickle[P](x: Array[Int])(implicit registry: PicklerRegistry, builder: PBuilder[P]): P = {
-      builder.makeArray(x.map(v => registry.pickle(v)).toSeq: _*)
+  trait BaseArrayPickler[A <: Array[Any]] extends Pickler[A] {
+    def pickle[P](x: A)(implicit registry: PicklerRegistry, builder: PBuilder[P]): P = {
+      builder.makeArray(x.map{
+        case x: java.lang.Integer => DoublePickler.pickle(x.toDouble)
+        case x: java.lang.Double => DoublePickler.pickle(x)
+        case x: java.lang.Float => FloatPickler.pickle(x)
+        case x: java.lang.Character => CharPickler.pickle(x)
+        case x: java.lang.Long => LongPickler.pickle(x)
+        case x: java.lang.Boolean => BooleanPickler.pickle(x)
+        case v => registry.pickle(v)
+      }.toSeq: _*)
     }
   }
+
+  implicit object ArrayPickler extends BaseArrayPickler[Array[Any]]
+
+
+  // TODO: not sure of a way around having to define these yet
   implicit object DoubleArrayPickler extends Pickler[Array[Double]] {
     def pickle[P](x: Array[Double])(implicit registry: PicklerRegistry, builder: PBuilder[P]): P = {
-      builder.makeArray(x.map(v => registry.pickle(v)).toSeq: _*)
+      builder.makeArray(x.map(v => DoublePickler.pickle(v)).toSeq: _*)
     }
-  }*/
+  }
 
 
   /*
