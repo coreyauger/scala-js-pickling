@@ -109,10 +109,9 @@ class BasePicklerRegistry extends PicklerRegistry {
     registerInternal((Vector[Nothing]()).getClass, Pickler.VectorPickler, Unpickler.VectorUnpickler)
     register[Vector[Any]]
 
-/*    registerInternal((Array[Nothing]()).getClass, Pickler.ArrayPickler, Unpickler.ArrayUnpickler)
+    registerInternal((Array[Nothing]()).getClass, Pickler.ArrayPickler, Unpickler.ArrayUnpickler)
     register[Array[Any]]
-    register[Array[Int]]
-    register[Array[Double]]*/
+    register[Array[Double]]
 
 //    register[Array[Double]]
 

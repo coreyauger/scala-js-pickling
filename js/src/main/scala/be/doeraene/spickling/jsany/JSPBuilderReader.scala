@@ -21,7 +21,16 @@ object JSPReader extends PReader[js.Any] {
   def isUndefined(x: js.Any): Boolean = x.isInstanceOf[Unit]
   def isNull(x: js.Any): Boolean = x eq null
   def readBoolean(x: js.Any): Boolean = x.asInstanceOf[Boolean]
-  def readNumber(x: js.Any): Double = x.asInstanceOf[Double]
+  def readNumber(x: js.Any): Double = {
+    //println(s"ReadNumber: ${x}")
+    //println(s"class: ${x.getClass.getName}")
+    if( x.getClass.getName == "java.lang.String") {
+      //println("Sring to Double..")
+      x.asInstanceOf[String].toDouble
+    }else{
+      x.asInstanceOf[Double]
+    }
+  }
   def readString(x: js.Any): String = x.asInstanceOf[String]
   def readArrayLength(x: js.Any): Int = x.asInstanceOf[js.Array[_]].length.toInt
   def readArrayElem(x: js.Any, index: Int): js.Any =

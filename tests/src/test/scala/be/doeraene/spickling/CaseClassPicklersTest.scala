@@ -23,6 +23,18 @@ object CaseClassPicklersTest extends PicklersTest {
               age = lit(t = "java.lang.Integer", v = 24))))
     }
 
+    "pickle Array[Double]" - {
+      expectPickleEqual(
+        Array[Double](1,2),
+        lit(t = "[D", v =  js.Array(1,2)))
+    }
+
+    "unpickle Array[Double]" - {
+      expectUnpickleEqual(
+        lit(t = "[D", v =  js.Array(2.0,3.0)),
+        Array[Double](2.0,3.0))
+    }
+
 
     "pickle vector" - {
       expectPickleEqual(
