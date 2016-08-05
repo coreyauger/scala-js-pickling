@@ -39,6 +39,18 @@ object CaseClassPicklersTest extends PicklersTest {
         Vector[Int](1,2))
     }
 
+   /* "pickle Array[Double]" - {
+      expectPickleEqual(
+        Array[Double](3,4),
+        lit(t = "[D", v =  js.Array(3,4)))
+    }
+
+    "unpickle Array[Double]" - {
+      expectUnpickleEqual(
+        lit(t = "[D", v =  js.Array(3,4)),
+        Array[Double](3,4))
+    }*/
+
     "unpickle a Person" - {
       expectUnpickleEqual(
           lit(t = "be.doeraene.spickling.Person", v = lit(

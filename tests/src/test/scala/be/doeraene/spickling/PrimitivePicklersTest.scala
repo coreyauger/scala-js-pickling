@@ -32,6 +32,12 @@ object PrimitivePicklersTest extends PicklersTest {
           42)
     }
 
+    "pickle list[double]" - {
+      expectPickleEqual(
+        List[Double](1.0),
+        lit(t = "java.lang.Long", v = lit(l = 42, m = 0, h = 0)))
+    }
+
     "pickle a Long" - {
       expectPickleEqual(
           42L,

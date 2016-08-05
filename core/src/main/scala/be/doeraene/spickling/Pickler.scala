@@ -109,6 +109,12 @@ object Pickler extends PicklerMaterializers {
     }
   }*/
 
+  /*implicit object DoubleArrayPickler extends Pickler[Array[Double]] {
+    def pickle[P](x: Array[Double])(implicit registry: PicklerRegistry, builder: PBuilder[P]): P = {
+      builder.makeArray(x.map(v => DoublePickler.pickle(v)).toSeq: _*)
+    }
+  }*/
+
 
   /*
    * JDate
