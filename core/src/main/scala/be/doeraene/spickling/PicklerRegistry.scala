@@ -58,7 +58,7 @@ class BasePicklerRegistry extends PicklerRegistry {
     if (value == null) {
       builder.makeNull()
     } else {
-      println(s"value: ${value}")
+      //println(s"value: ${value}")
       singletons.get(value) match {
         case Some(name) => builder.makeObject(("s", builder.makeString(name)))
         case _ =>
@@ -68,7 +68,7 @@ class BasePicklerRegistry extends PicklerRegistry {
             case x if x.startsWith("[L")               => "[Ljava.lang.Object;"
             case name                                 => name
           }
-          println(s"Lookup for className: ${className}")
+          //println(s"Lookup for className: ${className}")
           val pickler = picklers(className)
           val pickledValue = pickler.pickle[P](value.asInstanceOf[pickler.Picklee])
           builder.makeObject(
