@@ -21,6 +21,8 @@ trait PicklerRegistry {
       registry: PicklerRegistry = this): P
   def unpickle[P](pickle: P)(implicit reader: PReader[P],
       registry: PicklerRegistry = this): Any
+
+  def contains(value: Any):Boolean
 }
 
 class BasePicklerRegistry extends PicklerRegistry {
@@ -54,6 +56,16 @@ class BasePicklerRegistry extends PicklerRegistry {
     singletonsRev(name.name) = obj
   }
 
+  def contains(value: Any):Boolean = {
+    val className = value.getClass.getName match {
+      case "java.lang.Byte" | "java.lang.Short" => "java.lang.Integer"
+      case "java.lang.Float"                    => "java.lang.Double"
+      case x if x.startsWith("[L")              => "[Ljava.lang.Object;"
+      case name                                 => name
+    }
+    picklers.contains(className)
+  }
+
   def pickle[P](value: Any)(implicit builder: PBuilder[P], registry: PicklerRegistry): P = {
     if (value == null) {
       builder.makeNull()
@@ -78,8 +90,7 @@ class BasePicklerRegistry extends PicklerRegistry {
     }
   }
 
-  def unpickle[P](pickle: P)(implicit reader: PReader[P],
-      registry: PicklerRegistry): Any = {
+  def unpickle[P](pickle: P)(implicit reader: PReader[P], registry: PicklerRegistry): Any = {
     if (reader.isNull(pickle)) {
       null
     } else {
